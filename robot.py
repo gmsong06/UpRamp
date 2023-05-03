@@ -9,6 +9,7 @@ class MyRobot(TimedRobot):
         self.container = RobotContainer()
 
     def robotPeriodic(self):
+        print(self.container.drivetrain.get_gyro_y())
         pass
 
     def autonomousInit(self):
