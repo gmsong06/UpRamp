@@ -7,5 +7,13 @@
       "/LiveWindow/Ungrouped/Spark[1]": "Motor Controller",
       "/SmartDashboard/Auto Chooser": "String Chooser"
     }
+  },
+  "NetworkTables": {
+    "SmartDashboard": {
+      "Auto Chooser": {
+        "open": true
+      },
+      "open": true
+    }
   }
 }

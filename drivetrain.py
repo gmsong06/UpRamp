@@ -10,9 +10,6 @@ class Drivetrain(DifferentialDrive):
         self.gyro = romi.RomiGyro()
         self.accelerometer = wpilib.BuiltInAccelerometer()
 
-    def move_forward(self, speed):
-        self.arcadeDrive(0, speed)
-
     def get_gyro_y(self):
         """
         Give the twist of the robot in degrees
