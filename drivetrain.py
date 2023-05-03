@@ -1,10 +1,28 @@
 from wpilib.drive import DifferentialDrive
-from wpilib import Spark
-class Drivetrain:
-    def __init__(self):
-        self.left_motor= Spark(0)
-        self.right_motor=Spark(1)
-        self.drivetrain = DifferentialDrive(self.left_motor, self.right_motor)
+import wpilib
+import romi
 
-    def move(self, forward, rotate):
-        self.drivetrain.arcadeDrive(forward, rotate)
+class Drivetrain(DifferentialDrive):
+    def __init__(self, left_motor, right_motor):
+        super().__init__(left_motor, right_motor)
+        self.left_motor = left_motor
+        self.right_motor = right_motor
+        self.gyro = romi.RomiGyro()
+        self.accelerometer = wpilib.BuiltInAccelerometer()
+
+    def move_forward(self, speed):
+        self.arcadeDrive(0, speed)
+
+    def get_gyro_y(self):
+        """
+        Give the twist of the robot in degrees
+        :return: current y in degrees
+        """
+
+        return self.gyro.getAngleY()
+
+    def reset_gyro(self):
+        """
+        Reset the gyro to 0 degrees
+        """
+        self.gyro.reset()

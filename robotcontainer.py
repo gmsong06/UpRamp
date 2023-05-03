@@ -1,24 +1,18 @@
-
 import wpilib
-
-from drivestraight import DriveStraight
-from gyroturn import GyroTurn
 from drivetrain import Drivetrain
+from wpilib import Spark
 from autoroutine import AutoRoutine
-
 
 class RobotContainer:
 
     def __init__(self):
         self.controller = wpilib.Joystick(0)
-        self.drivetrain = Drivetrain()
+        self.drivetrain = Drivetrain(Spark(0), Spark(1))
         self.chooser = wpilib.SendableChooser()
         self._configure()
 
     def _configure(self):
-        self.chooser.setDefaultOption("Go Straight", DriveStraight(self.drivetrain, .5))
-        self.chooser.addOption("Turn 90", GyroTurn(self.drivetrain, 90))
-        wpilib.SmartDashboard.putData(self.chooser)
+        wpilib.SmartDashboard.putData("Auto Chooser", self.chooser)
 
-    def get_autonomous(self)->AutoRoutine:
+    def get_autonomous_routine(self) -> AutoRoutine:
         return self.chooser.getSelected()
