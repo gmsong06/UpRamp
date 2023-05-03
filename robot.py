@@ -12,7 +12,6 @@ class MyRobot(TimedRobot) :
         self.drivetrain= Drivetrain()
 
 
-
     def robotPeriodic(self):
         '''This is called every cycle of the code. In general the code is loop
         through every .02 seconds.'''
@@ -22,12 +21,14 @@ class MyRobot(TimedRobot) :
 
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
-
-    1
+      self.drive.setSafetyEnabled(False)
     pass
 
     def autonomousPeriodic(self):
-        #self.linefollower.run()
+        speed = 0.5  # Will adjust this value as needed
+        error = self.ramp_sensor.getVoltage() - self.ramp_threshold
+        correction = self.pid_controller.calculate(error)
+        self.drive.arcadeDrive(speed, correction)
 
         '''This is called every cycle while the robot is in autonomous.'''
 
