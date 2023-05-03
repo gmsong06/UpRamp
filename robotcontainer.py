@@ -1,3 +1,4 @@
+
 import wpilib
 
 from drivestraight import DriveStraight
@@ -15,7 +16,7 @@ class RobotContainer:
         self._configure()
 
     def _configure(self):
-        self.chooser.setDefaultOption("Go Straight", DriveStraight(self.drivetrain, 0.5))
+        self.chooser.setDefaultOption("Go Straight", DriveStraight(self.drivetrain, .5))
         self.chooser.addOption("Turn 90", GyroTurn(self.drivetrain, 90))
         wpilib.SmartDashboard.putData(self.chooser)
 
