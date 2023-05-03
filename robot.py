@@ -10,6 +10,10 @@ class MyRobot(TimedRobot) :
         joysticks and other presets.'''
         self.controller = Joystick(0)
         self.drivetrain= Drivetrain()
+        self.ramp_sensor = wpilib.AnalogInput(0)
+        self.ramp_threshold = 2.0
+        self.pid_controller = PIDController(0.1, 0.0, 0.0)  # I will adjust these values as needed
+        self.pid_controller.setSetpoint(0.0)
 
 
 
@@ -22,12 +26,14 @@ class MyRobot(TimedRobot) :
 
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
-
-    1
+        self.drive.setSafetyEnabled(False)
     pass
 
     def autonomousPeriodic(self):
-        #self.linefollower.run()
+        speed = 0.5  # adjust this value as needed
+        error = self.ramp_sensor.getVoltage() - self.ramp_threshold
+        correction = self.pid_controller.calculate(error)
+        self.drive.arcadeDrive(speed, correction)
 
         '''This is called every cycle while the robot is in autonomous.'''
 
