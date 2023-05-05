@@ -26,11 +26,24 @@ class UpRamp(AutoRoutine):
     def run(self):
         self.update_state()
 
+        #if config.state == 0:
+            #self.drivetrain.arcadeDrive(0, 1) #test out to see if robot drives forward
+        #elif config.state == 1:
+            #self.drivetrain.arcadeDrive(0, -0.5) #lower the speed but still drive straight
+        #else:
+            #self.drivetrain.arcadeDrive(0, 0)
+
         if config.state == 0:
-            self.drivetrain.arcadeDrive(0, -1)
+            # calculate the correction using the PID controller
+            error = self.drivetrain.left_encoder.getDistance() - self.drivetrain.right_encoder.getDistance()
+            correction = self.pid_controller.calculate(error)
+            # drive straight with correction
+            self.drivetrain.arcadeDrive(0.25, 0.5 + correction)
         elif config.state == 1:
-            self.drivetrain.arcadeDrive(0, -0.5)
+            # lower the speed but still drive straight (adjust the speed as needed)
+            self.drivetrain.arcadeDrive(0.5, -0.2)
         else:
+            # stop the robot
             self.drivetrain.arcadeDrive(0, 0)
 
         print(f"State is {config.state}")

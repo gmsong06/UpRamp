@@ -8,8 +8,7 @@ class MyRobot(TimedRobot):
     def robotInit(self,):
         self.container = RobotContainer()
         self.auto = UpRamp(self.container.drivetrain)
-        self.pid_controller = PIDController(0.1, 0.0, 0.0)  # I will adjust these values as needed
-        self.pid_controller.setSetpoint(0.0)
+
 
 
     def robotPeriodic(self):
@@ -21,9 +20,7 @@ class MyRobot(TimedRobot):
 
     def autonomousPeriodic(self):
         self.auto.run()
-        error = self.container.ramp_sensor.getVoltage() - self.container.ramp_threshold
-        correction = self.pid_controller.calculate(error)
-        self.container.drivetrain.driveDistance(10, 0.5 + correction)
+
 
     def teleopInit(self):
         pass
