@@ -1,7 +1,8 @@
-from wpilib import TimedRobot, Joystick, Spark
+from wpilib import TimedRobot, Joystick, Spark, AnalogInput, PIDController
 import os
 import wpilib
 from drivetrain import Drivetrain
+from gyroturn import GyroTurn
 
 class MyRobot(TimedRobot) :
 
@@ -14,13 +15,15 @@ class MyRobot(TimedRobot) :
         self.ramp_threshold = 2.0
         self.pid_controller = PIDController(0.1, 0.0, 0.0)  # I will adjust these values as needed
         self.pid_controller.setSetpoint(0.0)
-
-
+        self.on_ramp = False
 
     def robotPeriodic(self):
         '''This is called every cycle of the code. In general the code is loop
         through every .02 seconds.'''
-
+        if self.on_ramp:
+            error = self.ramp_sensor.getVoltage() - self.ramp_threshold
+            correction = self.pid_controller.calculate(error)
+            self.drivetrain.arcadeDrive(0.5, correction)
 
     pass
 
@@ -30,10 +33,13 @@ class MyRobot(TimedRobot) :
     pass
 
     def autonomousPeriodic(self):
-        speed = 0.5  # adjust this value as needed
-        error = self.ramp_sensor.getVoltage() - self.ramp_threshold
-        correction = self.pid_controller.calculate(error)
-        self.drive.arcadeDrive(speed, correction)
+        if not self.on_ramp:
+            # Drive up the ramp until the threshold is crossed
+            if self.ramp_sensor.getVoltage() >= self.ramp_threshold:
+                self.on_ramp = True
+        else:
+            # Stop the robot once it reaches the top of the ramp
+            self.drivetrain.stop()
 
         '''This is called every cycle while the robot is in autonomous.'''
 

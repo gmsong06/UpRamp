@@ -1,5 +1,6 @@
 from wpilib.drive import DifferentialDrive
 from wpilib import Spark
+from gyroturn import GyroTurn
 class Drivetrain:
     def __init__(self):
         self.left_motor= Spark(0)
