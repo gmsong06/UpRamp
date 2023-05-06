@@ -25,6 +25,12 @@ class Drivetrain(DifferentialDrive):
 
         return self.gyro.getAngleY()
 
+    def get_left_distance(self):
+        return self.left_encoder.getDistance()
+
+    def get_right_distance(self):
+        return self.right_encoder.getDistance()
+
     def get_average_distance(self):
         return (self.left_encoder.getDistance() + self.right_encoder.getDistance())/2
     def reset_gyro(self):
