@@ -7,7 +7,7 @@ class MyRobot(TimedRobot):
 
     def robotInit(self,):
         self.container = RobotContainer()
-        self.auto = UpRamp(self.container.drivetrain)
+        #self.auto = UpRamp(self.container.drivetrain)
 
 
 
@@ -15,7 +15,7 @@ class MyRobot(TimedRobot):
         pass
 
     def autonomousInit(self):
-        # self.auto = self.container.get_autonomous_routine()
+        self.auto = self.container.get_autonomous_routine()
         pass
 
     def autonomousPeriodic(self):
