@@ -2,19 +2,16 @@ from wpilib import TimedRobot, Joystick, Spark
 import os
 import wpilib
 from robotcontainer import RobotContainer
-from upramp import UpRamp
 class MyRobot(TimedRobot):
 
     def robotInit(self):
         self.container = RobotContainer()
-        self.auto = UpRamp(self.container.drivetrain)
 
     def robotPeriodic(self):
         pass
 
     def autonomousInit(self):
-        # self.auto = self.container.get_autonomous_routine()
-        pass
+        self.auto = self.container.get_autonomous_routine()
 
     def autonomousPeriodic(self):
         self.auto.run()
