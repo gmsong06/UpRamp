@@ -16,22 +16,13 @@ class UpRamp(AutoRoutine):
     def update_state(self):
         if self.drivetrain.get_gyro_y() < -1:  # going up ramp
             config.state = 1
+        elif self.drivetrain.get_average_distance() > 5000:  # reached top of ramp
+            config.state = 2
         else:
-            print(f"Distance is {self.drivetrain.get_average_distance()}")
-            if self.drivetrain.get_average_distance() < -5000:
-                config.state = 2
-            else:
-                config.state = 0
+            config.state = 0
 
     def run(self):
         self.update_state()
-
-        #if config.state == 0:
-            #self.drivetrain.arcadeDrive(0, 1) #test out to see if robot drives forward
-        #elif config.state == 1:
-            #self.drivetrain.arcadeDrive(0, -0.5) #lower the speed but still drive straight
-        #else:
-            #self.drivetrain.arcadeDrive(0, 0)
 
         if config.state == 0:
             # calculate the correction using the PID controller
