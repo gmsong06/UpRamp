@@ -7,14 +7,13 @@ class UpRamp(AutoRoutine):
 
     def __init__(self, drivetrain: Drivetrain):
         self.drivetrain = drivetrain
-        self.pid_controller = PIDController(1/200, 1/1000, 0)
+        self.pid_controller = PIDController(120, 0, 0)
         self.pid_controller.setSetpoint(0)
-        self.pid_controller.setTolerance(3)
         self.drivetrain.left_encoder.reset()
         self.drivetrain.right_encoder.reset()
 
     def update_state(self):
-        if self.drivetrain.get_gyro_y() < -1:  # going up ramp
+        if self.drivetrain.get_gyro_y() < -5:  # going up ramp
             config.state = 1
         else:
             print(f"Distance is {self.drivetrain.get_average_distance()}")
@@ -24,26 +23,19 @@ class UpRamp(AutoRoutine):
                 config.state = 0
 
     def run(self):
+        encoder_error = self.drivetrain.get_left_distance() - self.drivetrain.get_right_distance()
+        rotation = self.pid_controller.calculate(encoder_error)
+
+        if self.pid_controller.atSetpoint():
+            rotation = 0
+
         self.update_state()
 
-        #if config.state == 0:
-            #self.drivetrain.arcadeDrive(0, 1) #test out to see if robot drives forward
-        #elif config.state == 1:
-            #self.drivetrain.arcadeDrive(0, -0.5) #lower the speed but still drive straight
-        #else:
-            #self.drivetrain.arcadeDrive(0, 0)
-
         if config.state == 0:
-            # calculate the correction using the PID controller
-            error = self.drivetrain.left_encoder.getDistance() - self.drivetrain.right_encoder.getDistance()
-            correction = self.pid_controller.calculate(error)
-            # drive straight with correction
-            self.drivetrain.arcadeDrive(0.25, 0.5 + correction)
+            self.drivetrain.arcadeDrive(rotation, -1)
         elif config.state == 1:
-            # lower the speed but still drive straight (adjust the speed as needed)
-            self.drivetrain.arcadeDrive(0.5, -0.2)
+            self.drivetrain.arcadeDrive(rotation, -.5)
         else:
-            # stop the robot
             self.drivetrain.arcadeDrive(0, 0)
 
         print(f"State is {config.state}")
