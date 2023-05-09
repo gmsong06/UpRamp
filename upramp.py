@@ -9,6 +9,7 @@ class UpRamp(AutoRoutine):
         self.drivetrain = drivetrain
         self.pid_controller = PIDController(1/200, 1/1000, 0)
         self.pid_controller.setSetpoint(0)
+        self.pid_controller.setTolerance(.05)
         self.drivetrain.left_encoder.reset()
         self.drivetrain.right_encoder.reset()
 

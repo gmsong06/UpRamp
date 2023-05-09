@@ -1,8 +1,7 @@
 from wpilib.drive import DifferentialDrive
 import wpilib
 import romi
-from wpilib import Encoder
-
+import math
 class Drivetrain(DifferentialDrive):
     def __init__(self, left_motor, right_motor, left_encoder, right_encoder):
         super().__init__(left_motor, right_motor)
@@ -11,11 +10,14 @@ class Drivetrain(DifferentialDrive):
 
         self.left_encoder = left_encoder
         self.right_encoder = right_encoder
+
+        self.left_encoder.setDistancePerPulse(0.07 * math.pi / (12 * 120))
+        self.right_encoder.setDistancePerPulse(0.07 * math.pi / (12 * 120))
+
         self.left_encoder.reset()
         self.right_encoder.reset()
 
         self.gyro = romi.RomiGyro()
-        self.accelerometer = wpilib.BuiltInAccelerometer()
 
     def get_gyro_y(self):
         """
