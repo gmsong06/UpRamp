@@ -8,13 +8,13 @@ class RobotContainer:
 
     def __init__(self):
         self.controller = wpilib.Joystick(0)
-        self.drivetrain = Drivetrain(Spark(0), Spark(1), Encoder(4, 5), Encoder(6, 7))
+        self.drivetrain = Drivetrain()
         self.chooser = wpilib.SendableChooser()
         self._configure()
 
     def _configure(self):
         self.chooser.addOption("Up Ramp", UpRamp(self.drivetrain))
-        wpilib.SmartDashboard.putData("Auto Chooser", self.chooser)
+        wpilib.SmartDashboard.putData(self.chooser)
 
     def get_autonomous_routine(self) -> AutoRoutine:
         print(self.chooser.getSelected())

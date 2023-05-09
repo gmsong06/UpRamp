@@ -1,8 +1,11 @@
+
+
 from wpilib import TimedRobot, Joystick, Spark
 import os
 import wpilib
 from robotcontainer import RobotContainer
 from upramp import UpRamp
+from drivetrain import Drivetrain
 class MyRobot(TimedRobot):
 
     def robotInit(self,):
@@ -29,9 +32,14 @@ class MyRobot(TimedRobot):
         forward = self.container.controller.getRawAxis(0)
         rotate = self.container.controller.getRawAxis(1)
         self.container.drivetrain.arcadeDrive(forward, rotate)
+        print(self.container.drivetrain.getGyroAngleY())
+    def autonomousExit(self):
+        self.container.drivetrain.reset_encoders()
+        self.container.drivetrain.reset_gyro()
 
 
 if __name__ == "__main__":
     os.environ["HALSIMWS_HOST"] = "10.0.0.2"
     os.environ["HALSIMWS_PORT"] = "3300"
+
     wpilib.run(MyRobot)

@@ -1,21 +1,23 @@
+#received help from Aniekan, Adam, Ann and Eric
+
 from wpilib.drive import DifferentialDrive
 import wpilib
-import romi
+from wpilib import TimedRobot, Joystick, Spark
 from wpilib import Encoder
 
 class Drivetrain(DifferentialDrive):
-    def __init__(self, left_motor, right_motor, left_encoder, right_encoder):
-        super().__init__(left_motor, right_motor)
-        self.left_motor = left_motor
-        self.right_motor = right_motor
+    def __init__(self):
+        self.left_encoder = wpilib.Encoder(4,5)
+        self.right_encoder = Encoder(6,7)
+        self.left_motor = Spark(0)
+        self.right_motor= Spark(1)
+        self.drivetrain = DifferentialDrive(self.left_motor, self.right_motor)
+        self.left_encoder.setDistancePerPulse(0.07 * math.pi/(12*120))
+        self.right_encoder.setDistancePerPulse(0.07 * math.pi / (12 * 120))
+        self.gyro= romi.RomiGyro()
 
-        self.left_encoder = left_encoder
-        self.right_encoder = right_encoder
-        self.left_encoder.reset()
-        self.right_encoder.reset()
-
-        self.gyro = romi.RomiGyro()
-        self.accelerometer = wpilib.BuiltInAccelerometer()
+    def move(self, forward, rotate):
+        self.drivetrain.arcadeDrive(rotate,forward)
 
     def get_gyro_y(self):
         """
@@ -32,3 +34,7 @@ class Drivetrain(DifferentialDrive):
         Reset the gyro to 0 degrees
         """
         self.gyro.reset()
+
+    def resetEncoders(self):
+        self.left_encoders.reset()
+        self.right_encoders.reset()
