@@ -7,7 +7,7 @@ class UpRamp(AutoRoutine):
 
     def __init__(self, drivetrain: Drivetrain):
         self.drivetrain = drivetrain
-        self.pid_controller = PIDController(1/200, 1/1000, 0)
+        self.pid_controller = PIDController(21, 0, 0)
         self.pid_controller.setSetpoint(0)
         self.pid_controller.setTolerance(.05)
         self.drivetrain.left_encoder.reset()
@@ -17,11 +17,8 @@ class UpRamp(AutoRoutine):
         if self.drivetrain.get_gyro_y() < -5:  # going up ramp
             config.state = 1
         else:
-            print(f"Distance is {self.drivetrain.get_average_distance()}")
-            if self.drivetrain.get_average_distance() < -5000:
+            if config.state == 1:
                 config.state = 2
-            else:
-                config.state = 0
 
     def run(self):
         encoder_error = self.drivetrain.get_left_distance() - self.drivetrain.get_right_distance()

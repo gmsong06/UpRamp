@@ -5,8 +5,8 @@
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "960",
-      "xpos": "960",
+      "width": "640",
+      "xpos": "640",
       "ypos": "26"
     }
   },
@@ -19,7 +19,7 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "250,332",
-      "Size": "796,155"
+      "Size": "634,155"
     },
     "###NetworkTables": {
       "Collapsed": "0",
